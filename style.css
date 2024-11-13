@@ -1,0 +1,714 @@
+:root {
+    --color-primario: rgba(247,68,1,1);
+    --color-secundario: rgba(246,160,23,1);
+    --color-terciario: rgba(253,199,39,1);
+    --color-cuaternario: rgb(0, 0, 0);
+    --color-quintenario: rgb(27, 12, 5);
+}
+
+@font-face {
+    font-family: 'Monster'; 
+    src: url('./assets/font/mrsmonster.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Monster";
+    color: var(--color-primario);
+    text-decoration: none;
+    list-style: none;
+    font-size: 1.3vw;
+}
+
+body{
+    background-color: var(--color-cuaternario);
+overflow-x: hidden;
+
+}
+
+body > header > nav > ul{
+    background-color: var(--color-cuaternario);
+    height: 8vw;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(9, 1fr); 
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    width: 100vw;
+ 
+ 
+   }
+#ul_nav{
+    width: 100vw;
+  
+}
+
+#Menu{
+    grid-row: 2;
+    grid-column: 3;
+
+}
+#imgmenu, #imguser, #imgshop{
+    width: 4vw;
+    height: auto;
+}
+
+
+#Logo{
+    grid-row: 2;
+    grid-column: 1/ 4;
+    margin-left: -6vw;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+
+}
+
+#imglogo{
+    width: 20vw;
+    height: auto;
+
+}
+
+#User{
+    grid-row: 2;
+    grid-column: 9;
+    margin-right: 2vw;
+}
+#Shop{
+    grid-row: 2;
+    grid-column: 8;
+    margin-right: -2vw;
+}
+#Search{
+    grid-row: 2;
+    grid-column: 4/8;
+    width: 45vw ;
+    height: 4vw;
+    background-color: var(--color-terciario);
+    border-radius: 5vw;
+    border: none;
+    overflow: hidden;
+    justify-content: center;
+    box-sizing: content-box;
+    
+
+   
+}
+
+#search{
+    width: 30vw;
+    background-color: var(--color-terciario);
+    height: 6vw;
+    border: none;
+    outline: none;
+    gap: 2vw;
+    margin-left: 1.5vw;
+    text-align: center;
+    font-size: 2vw;
+    padding-left: -1vw;
+    padding-bottom: 2vw;
+  
+}
+
+
+#imgsearch{
+    margin-top: 0.7vw;
+    width: 3vw;
+    height: auto;
+    position: absolute;           
+    overflow: collapse;
+
+}
+
+#tablet_nav1{
+
+    grid-row: 1;
+    grid-column: 3;
+
+}
+#tablet_nav2{
+    grid-row: 1;
+    grid-column: 7;
+
+}
+#tablet_nav3{
+    grid-row: 1;
+    grid-column: 1;
+
+}
+#tablet_nav4{
+    grid-row: 1;
+    grid-column: 4;
+
+}
+#tablet_nav5{
+    grid-row: 1;
+    grid-column: 5;
+
+}
+#tablet_nav6{
+    grid-row: 1;
+    grid-column: 6;
+
+}
+#tablet_nav7{
+    grid-row: 1;
+    grid-column: 2;
+
+}
+#tablet_nav8{
+    grid-row: 1;
+    grid-column: 8;
+
+}
+#tablet_nav9{
+    margin-right: 2vw;
+    grid-row: 1;
+    grid-column: 9;
+}
+
+#anuncios_ul{
+    width: 100vw;
+    height: 5vw;
+    background-color: var(--color-cuaternario);
+    color: var(--color-primario);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    justify-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-left: 5vw;
+    padding-right: 5vw; 
+}
+#articleHeroes{
+    display: flex;
+    flex-direction: column;
+       
+        
+    }
+
+p{
+    margin-bottom: -5vw;
+    padding-bottom: 1vw;
+
+
+}
+h2{
+   
+    text-align: center;
+    font-size: 3vw;
+}
+
+h3{
+    text-align: center;
+    
+}
+#presentaciónPrincipal{
+    width: 99vw;
+}
+#presentacion{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    width: 99vw;
+    overflow: hidden;
+}
+#video{
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+#videoFondo {   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 98vw;
+    height: auto;
+    object-fit: cover;
+    z-index: 0;
+    position: relative;
+}
+
+
+
+#soldadoPresentacion {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vw;
+    text-transform: uppercase;
+    z-index: 1;
+    position: absolute;
+    margin-top: -20vw;
+ 
+}
+
+h1{
+    z-index: 1;
+    font-size: 3vw;
+  
+}
+
+#soldado {
+    opacity: 0.5;
+    width: 25vw;
+    height: auto;
+
+}
+
+#articleHeroes{
+    margin-top: 5vw;
+    width: 100vw;
+    display: flex;
+
+    
+}
+#designer{
+    width: 99vw;
+    height: 50vw;
+    position: absolute;
+    z-index: 0;
+    opacity: 0.2;
+}
+#heroes_ul{
+    margin-top: 10vw;
+    width: 98vw;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-items: center;
+    justify-content: space-evenly;    
+    align-items: stretch;
+    align-content: center;
+    z-index: 1;
+    gap: 5vw;
+}
+.heroes_li{
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    min-height: 50%;
+    
+}
+
+.soldier{
+    width: 10vw;
+    height: 14vw;
+    opacity: 0.5;
+    transition: transform .5s;
+}
+
+.soldier:hover{
+    transform: scale(1.5);
+    box-shadow: 0 0 100px var(--color-terciario);
+    border-radius: 5vw;
+}
+#articleVideojuegos{
+    display: flex;
+    flex-direction: column;
+}   
+#fondoVideojuegos{
+    width: 100vw;
+    height: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    z-index: 0;
+    position: absolute;
+    margin-top: 5vw;
+    opacity: 0.1;
+}
+#articleVideojuegos{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    margin-top: 10vw;
+
+}
+#Videojuegos{
+    margin-top: 5vw;
+    display: flex;
+    flex-direction: row;
+    gap: 5vw;
+    z-index: 0;
+    position: relative;
+
+}
+.videojuegos_li{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+    align-content:space-between;
+    justify-items: center;
+    z-index: 1;
+}
+
+.videojuego{
+    width: 30vw;
+    height: 30vw;
+    display: flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+.videojuegos{
+    width: 30vw;
+    height: 30vw;
+    display: flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+#fallout video {
+    display: none;
+    width: 30vw;
+    height: 30vw;
+}
+
+h3{
+
+    color: yellowgreen;
+    font-size: 5vw;
+    position: absolute;
+}
+
+#fallout:hover img {
+    display: none;
+}
+
+#fallout:hover video {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+}
+#diablo video {
+    display: none;
+    width: 30vw;
+    height: 30vw;
+    
+
+}   
+
+#diablo:hover img {
+    display: none;
+}
+
+#diablo:hover video {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+}
+
+
+
+#footer{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 20vw;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    margin-top: 6vw;
+   
+ 
+
+}
+#footer1{
+   
+ 
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+
+.footImg{
+    min-width: 50px;
+    min-height: 50px;
+   
+}
+
+#logoFooter{
+    max-width: 300px;
+    width: 50vw;
+    height: auto;
+    min-width: 40vw;
+}
+
+
+@media screen and (max-width: 800px) {
+    .tabletnav, .pcnav {
+        display: none; 
+
+    }
+    
+    body > header > nav > ul{
+        background-color: var(--color-cuaternario);      
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        gap: 8vw;
+       
+    }
+
+    #Menu{
+        order: 1;
+        margin-right: 1vw;
+        width: 5vw;
+    }
+
+    #Logo{
+        order: 2;        
+    }
+    #imglogo{
+        width: 30vw;
+        height: auto;
+    }
+
+    #Search{
+       width: 30vw;
+       margin-left: -6vw;
+       margin-right: 2vw;
+       order: 3;
+       display: flex;
+       flex-direction: row;
+       flex-wrap: wrap;
+       
+    }
+    #search{
+        padding-top: -1vw;
+        padding-left: 2vw;
+        text-align: center;
+        padding-bottom: 2vw;
+        padding-right: 15vw;
+
+    }
+    #imgsearch{
+        margin-left: -1vw;
+    }
+
+    #User{
+        margin-left: -5vw;
+        margin-right: -5vw;
+        order: 4;
+    }
+
+    #Shop{
+        order: 5;
+        margin-right: 4vw;
+    }
+
+    #imgmenu, #imguser, #imgshop{
+        width: 6vw;
+        height: auto;
+    }
+
+    #anuncios_ul{
+        display: block;
+        width: 100%;
+        height: 5vw;
+        background-color: var(--color-cuaternario);
+        color: var(--color-primario);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding-left: 5vw;
+        padding-right: 5vw; 
+      
+    }
+    #designer{
+        width: 100vw;
+        height: auto;
+    }
+    #heroes_ul{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 1fr 1fr;
+
+    }
+    .heroes_li{
+        font-size: 4vw;
+    }
+    .soldier{
+        width: 14vw;
+        height: 18vw;
+        opacity: 0.6;
+        transition: transform .5s;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+    .tabletnav, .pcnav {
+        display: none; 
+
+    }
+    
+    @keyframes desplazar { 
+        0% { 
+            transform: translateX(98%); /*con esto ajustamos el inicio de la animacion al principio de la pantalla*/
+        }
+        100% {
+            transform: translateX(-156%); /*en negativo para que el ultimo elemento del li llegue hasta el final del visor*/
+        }
+    }
+    body {
+        background-color: var(--color-cuaternario);
+       
+    }
+    #anuncios{
+        width: 100vw;
+        overflow: hidden;
+    }
+    #anuncios_ul {
+      
+        display: flex;
+        animation: desplazar 10s linear infinite;
+        background-color: var(--color-cuaternario);
+        justify-content: space-between;
+   
+    }
+    
+    .anuncios_li {
+        background-color: var(--color-cuaternario);
+        margin-right: 25vw;     
+        font-size: 2vw;
+    }
+ 
+   
+    #ul_nav{
+        height: 18vw;
+        background-color: var(--color-cuaternario);      
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 1fr 1fr;
+        align-items:center;
+        justify-items: center;
+  
+       
+    }
+
+    #Menu{
+
+        margin: 2vw -5vw 0 12vw;
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+
+    #Logo{
+        margin-top: 2vw;
+        padding-left: 12vw;
+        grid-row: 1;
+        grid-column: 2/3;     
+        width: 40vw;
+    }
+    #imglogo{
+        width: 38vw;
+    }
+ 
+    #Search{
+        grid-row: 2;
+        grid-column: 1/ -1;
+        margin-top: -8vw;  
+        width: 80vw;    
+        margin-left: 3vw;
+    }
+    #search{
+        width: 100%;
+    }
+
+    #User{
+        margin-top: 2vw;
+        grid-row: 1;
+        grid-column: 3;
+        margin-right: -30vw;
+    }
+
+    #Shop{
+        margin-top: 2vw;
+        margin-right: -15vw;
+        grid-row: 1;
+        grid-column: 4;
+    }
+
+    #designer{
+        display: none;
+     
+    }
+    #heroes_ul{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        align-items: center;
+        justify-items: center;
+        align-content: center;
+        justify-content: center;
+      
+       
+    }
+    .heroes_li{
+        font-size: 6vw;
+        align-items: center;
+        justify-items: center;
+        align-content: center;
+        justify-content: center;
+        background-image: url("./assets/Wall(2).jpeg");
+        background-size: cover;
+        width: 50vw;
+        height: 50vw;
+    }
+    .soldier{
+        margin-top: 5vw;
+    }
+
+  .soldier:hover{
+
+        transform: scale(2);
+        box-shadow: 0 0 100px var(--color-primario);
+        border-radius: 6vw;
+        opacity: 1;
+
+        
+    }
+
+}
+
+
