@@ -5,8 +5,26 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![Responsive](https://img.shields.io/badge/Responsive-Mobile%20%7C%20Tablet%20%7C%20Desktop-brightgreen)
 ![Status](https://img.shields.io/badge/Status-En%20desarrollo-orange)
+![Licencia](https://img.shields.io/badge/Licencia-MIT-yellow)
 
 Web de entretenimiento gaming con selección de héroes, catálogo de videojuegos con preview en vídeo al hacer hover, y diseño responsive completo. Temática oscura con paleta naranja/amarillo sobre fondo negro.
+
+> Proyecto educativo — el código está comentado como guía de aprendizaje de HTML5, CSS Grid, Flexbox y JavaScript vanilla.
+
+---
+
+## Índice
+
+- [Vista previa](#vista-previa)
+- [Características](#características)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Técnicas CSS utilizadas](#técnicas-css-utilizadas)
+- [Técnicas JavaScript utilizadas](#técnicas-javascript-utilizadas)
+- [Cómo usar](#cómo-usar)
+- [Personalización](#personalización)
+- [Documentación](#documentación)
+- [Roadmap](#roadmap)
+- [Sobre el proyecto](#sobre-el-proyecto)
 
 ---
 
@@ -207,7 +225,7 @@ El archivo `index.js` es deliberadamente minimalista — solo 16 líneas — y d
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/Media_Park.git
+   git clone https://github.com/kabalera82/Media_Park.git
    ```
 2. Abrir `index.html` directamente en el navegador — no necesita servidor ni dependencias
 3. O usar la extensión **Live Server** en VS Code para recarga en caliente
@@ -267,6 +285,16 @@ Y en `style.css`, añade las reglas de swap:
 #nuevojuego:hover img   { display: none; }
 #nuevojuego:hover video { display: block; }
 ```
+
+---
+
+## Documentación
+
+| Documento | Descripción |
+|-----------|-------------|
+| [Guía de técnicas CSS](docs/guia-css-tecnicas.md) | 9 técnicas CSS explicadas en profundidad con el código del proyecto y patrones reutilizables |
+
+El código fuente está comentado al detalle — cada técnica tiene su explicación en el punto exacto donde se usa en `index.html`, `style.css` e `index.js`.
 
 ---
 
