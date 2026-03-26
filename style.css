@@ -1,3 +1,18 @@
+/* ════════════════════════════════════════════════════════
+   VARIABLES CSS (Custom Properties)
+   Se declaran en :root para que sean accesibles globalmente
+   en todo el documento — :root es el selector de más alto nivel,
+   equivalente a <html> pero con mayor especificidad.
+
+   Ventaja clave: cambiar --color-primario aquí actualiza
+   TODOS los elementos que usan esa variable a la vez.
+   Sin variables, ese mismo cambio requeriría buscar y editar
+   cada propiedad individualmente en todo el CSS.
+
+   Se consumen con: color: var(--nombre-variable);
+   Se pueden combinar con fallback: var(--color-x, red)
+   → si --color-x no existe, usa red como valor por defecto.
+   ════════════════════════════════════════════════════════ */
 :root {
     --color-primario: rgba(247,68,1,1);
     --color-secundario: rgba(246,160,23,1);
@@ -6,11 +21,61 @@
     --color-quintenario: rgb(27, 12, 5);
 }
 
+/* ════════════════════════════════════════════════════════
+   @font-face — FUENTE PERSONALIZADA LOCAL
+   Permite cargar una fuente tipográfica propia (no del sistema)
+   directamente desde el servidor o carpeta del proyecto.
+
+   font-family: define el NOMBRE con el que la usaremos en CSS.
+   Ese nombre es arbitrario — podrías llamarla 'MiFuente' o 'X'.
+   src: url() apunta al archivo .ttf (TrueType Font).
+
+   ¿Cuándo usar @font-face vs Google Fonts?
+   - @font-face local: control total, sin dependencia externa,
+     funciona offline, pero tú gestionas los archivos.
+   - Google Fonts (@import): más cómodo, sin archivos locales,
+     pero depende de una petición HTTP externa en cada carga.
+   ════════════════════════════════════════════════════════ */
 @font-face {
-    font-family: 'Monster'; 
+    font-family: 'Monster';
     src: url('./assets/font/mrsmonster.ttf');
 }
 
+/* ════════════════════════════════════════════════════════
+   RESET UNIVERSAL ( * )
+   El selector * aplica a TODOS los elementos del DOM.
+   Es el reset más agresivo y directo disponible en CSS.
+
+   margin: 0 / padding: 0 → los navegadores aplican
+   márgenes y paddings por defecto distintos entre sí
+   (Chrome, Firefox, Safari difieren). El reset los elimina
+   para partir de una base consistente y predecible.
+
+   box-sizing: border-box → EL MÁS IMPORTANTE del reset.
+   Por defecto (content-box), cuando asignas width: 200px
+   y añades padding: 20px, el elemento mide 240px en total.
+   Con border-box, el padding y el border se incluyen DENTRO
+   de esos 200px — el ancho declarado es el ancho real.
+   Esto hace los layouts mucho más predecibles y fáciles de calcular.
+
+   font-family: "Monster" → heredar la fuente a todos los
+   elementos desde el nivel raíz evita tener que declararla
+   en cada selector individualmente.
+
+   color: var(--color-primario) → mismo principio de herencia:
+   todos los textos parten del color naranja-rojo de la marca.
+
+   text-decoration: none → elimina el subrayado por defecto
+   de los <a>, que suele ser lo primero que se resetea en webs.
+
+   list-style: none → elimina los bullets (•) y números de
+   <ul> y <ol> que el navegador añade por defecto.
+
+   font-size: 1.3vw → tamaño base relativo al viewport.
+   vw = viewport width (1vw = 1% del ancho de la pantalla).
+   Al usarlo en *, todos los textos escalan con el ancho
+   de la ventana — layout fluido sin media queries para tamaños.
+   ════════════════════════════════════════════════════════ */
 * {
     margin: 0;
     padding: 0;
@@ -24,29 +89,60 @@
 
 body{
     background-color: var(--color-cuaternario);
+/* → por qué overflow-x: hidden:
+   Evita que elementos que sobresalen horizontalmente del viewport
+   (como animaciones de ticker o imágenes absolutas) generen
+   una barra de scroll horizontal, que rompe la experiencia visual. */
 overflow-x: hidden;
 
 }
 
+/* ════════════════════════════════════════════════════════
+   NAVEGACIÓN — CSS GRID (layout principal)
+   El <ul> del nav usa un grid de 2 filas × 9 columnas.
+
+   [TÉCNICA: CSS Grid]
+   grid-template-rows: 1fr 1fr → dos filas de igual altura.
+   1fr = "1 fracción del espacio disponible". Dos 1fr = 50% cada una.
+
+   grid-template-columns: repeat(9, 1fr) → 9 columnas iguales.
+   repeat(N, valor) es azúcar sintáctico para no escribir
+   "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr".
+
+   Los ítems del nav se posicionarán manualmente con
+   grid-row y grid-column (ver selectores siguientes).
+   Esto permite colocar logo, búsqueda e iconos en celdas
+   exactas sin recurrir a position: absolute — más robusto.
+
+   align-items / justify-items → centran el contenido DENTRO
+   de cada celda del grid (eje cross y eje main respectivamente).
+   align-content / justify-content → afectan al grid completo
+   dentro de su contenedor cuando hay espacio sobrante.
+   ════════════════════════════════════════════════════════ */
 body > header > nav > ul{
     background-color: var(--color-cuaternario);
     height: 8vw;
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: repeat(9, 1fr); 
+    grid-template-columns: repeat(9, 1fr);
     align-items: center;
     align-content: center;
     justify-content: center;
     justify-items: center;
     width: 100vw;
- 
- 
+
+
    }
 #ul_nav{
     width: 100vw;
-  
+
 }
 
+/* [TÉCNICA: Posicionamiento manual en Grid]
+   grid-row: 2 → este elemento vive en la fila 2 (fila inferior).
+   grid-column: 3 → ocupa exactamente la columna 3 del grid de 9.
+   Sin especificar esto, Grid colocaría los ítems automáticamente
+   en orden de flujo — aquí queremos control preciso de posición. */
 #Menu{
     grid-row: 2;
     grid-column: 3;
@@ -58,6 +154,13 @@ body > header > nav > ul{
 }
 
 
+/* [TÉCNICA: Grid span — ocupar varias columnas]
+   grid-column: 1 / 4 significa "empieza en la línea 1,
+   termina en la línea 4" → ocupa columnas 1, 2 y 3.
+   La notación es siempre línea-inicio / línea-fin (no índice de columna).
+   Alternativa equivalente: grid-column: 1 / span 3
+   El logo ocupa este espacio ancho para acomodar su imagen de 20vw.
+   El margen negativo compensa el centrado automático del grid. */
 #Logo{
     grid-row: 2;
     grid-column: 1/ 4;
@@ -75,6 +178,11 @@ body > header > nav > ul{
 
 }
 
+/* [TÉCNICA: Posicionamiento en columnas extremas del Grid]
+   grid-column: 9 → último slot del grid de 9 columnas.
+   Junto con grid-column: 8 del #Shop, ambos iconos se anclan
+   a la derecha del nav de forma declarativa, sin float ni
+   position absolute. El pequeño margen compensa el gap visual. */
 #User{
     grid-row: 2;
     grid-column: 9;
@@ -85,6 +193,20 @@ body > header > nav > ul{
     grid-column: 8;
     margin-right: -2vw;
 }
+
+/* [TÉCNICA: Grid span en barra de búsqueda]
+   grid-column: 4 / 8 → ocupa columnas 4, 5, 6 y 7 (4 columnas).
+   Así la barra de búsqueda ocupa el centro del nav, flanqueada
+   por el logo a la izquierda y los iconos a la derecha.
+
+   border-radius: 5vw con overflow: hidden → el border-radius
+   redondea las esquinas del contenedor, pero si el input interno
+   tiene fondo propio, se saldría visualmente. overflow: hidden
+   "recorta" cualquier contenido hijo que supere los bordes redondeados.
+
+   box-sizing: content-box → excepción al reset universal.
+   Aquí se sobreescribe explícitamente para que el width: 45vw
+   no incluya el border (aunque border: none lo hace irrelevante aquí). */
 #Search{
     grid-row: 2;
     grid-column: 4/8;
@@ -96,9 +218,9 @@ body > header > nav > ul{
     overflow: hidden;
     justify-content: center;
     box-sizing: content-box;
-    
 
-   
+
+
 }
 
 #search{
@@ -106,6 +228,9 @@ body > header > nav > ul{
     background-color: var(--color-terciario);
     height: 6vw;
     border: none;
+    /* → outline: none elimina el borde azul de foco del navegador.
+       Importante para UX: si lo eliminas, debes compensarlo con
+       otro indicador visual accesible para usuarios de teclado. */
     outline: none;
     gap: 2vw;
     margin-left: 1.5vw;
@@ -113,19 +238,38 @@ body > header > nav > ul{
     font-size: 2vw;
     padding-left: -1vw;
     padding-bottom: 2vw;
-  
+
 }
 
 
+/* [TÉCNICA: position: absolute para icono dentro de contenedor]
+   El icono de búsqueda usa position: absolute para superponerse
+   al input sin ocupar espacio en el flujo del documento.
+   Su padre (#Search) actúa como referencia de posición (position relativo implícito).
+   → overflow: collapse no es un valor estándar de CSS — los navegadores
+   lo ignoran. Su intención era colapsar el overflow, pero no funciona. */
 #imgsearch{
     margin-top: 0.7vw;
     width: 3vw;
     height: auto;
-    position: absolute;           
+    position: absolute;
     overflow: collapse;
 
 }
 
+/* ════════════════════════════════════════════════════════
+   ELEMENTOS DEL NAV SUPERIOR (tablet_nav1 … tablet_nav9)
+   Estos son los links de categorías que pueblan la FILA 1
+   del grid de navegación (grid-row: 1).
+
+   Cada uno se posiciona en una columna específica de las 9
+   disponibles, distribuyendo los textos de navegación
+   de forma manual y precisa a lo largo del ancho.
+
+   Este patrón muestra la potencia de Grid para layouts
+   donde el orden visual NO coincide con el orden en el HTML.
+   tablet_nav1 está en columna 3, tablet_nav7 en columna 2, etc.
+   ════════════════════════════════════════════════════════ */
 #tablet_nav1{
 
     grid-row: 1;
@@ -173,6 +317,27 @@ body > header > nav > ul{
     grid-column: 9;
 }
 
+/* ════════════════════════════════════════════════════════
+   BARRA DE ANUNCIOS — Flexbox
+   [TÉCNICA: Flexbox con justify-content: space-between]
+
+   display: flex → activa el modelo de caja flexible.
+   flex-direction: row → los ítems se distribuyen en fila (por defecto).
+
+   justify-content: space-between → distribuye el espacio ENTRE
+   los ítems: el primero va al inicio, el último al final,
+   y el espacio restante se reparte ENTRE los elementos intermedios.
+
+   Diferencia con las otras variantes:
+   - space-between: espacio ENTRE ítems. Los extremos tocan el borde.
+   - space-evenly: espacio IGUAL entre ítems Y entre ítems y bordes.
+   - space-around: cada ítem tiene el mismo margen a ambos lados,
+     lo que hace que el espacio entre dos ítems sea el doble que
+     el espacio entre un ítem y el borde del contenedor.
+
+   padding-left/right: 5vw → crea márgenes internos para que los
+   ítems extremos no queden pegados al borde del viewport.
+   ════════════════════════════════════════════════════════ */
 #anuncios_ul{
     width: 100vw;
     height: 5vw;
@@ -188,13 +353,13 @@ body > header > nav > ul{
     text-transform: uppercase;
     font-weight: bold;
     padding-left: 5vw;
-    padding-right: 5vw; 
+    padding-right: 5vw;
 }
 #articleHeroes{
     display: flex;
     flex-direction: column;
-       
-        
+
+
     }
 
 p{
@@ -204,14 +369,14 @@ p{
 
 }
 h2{
-   
+
     text-align: center;
     font-size: 3vw;
 }
 
 h3{
     text-align: center;
-    
+
 }
 #presentaciónPrincipal{
     width: 99vw;
@@ -232,7 +397,21 @@ h3{
     align-items: center;
     align-content: center;
 }
-#videoFondo {   
+
+/* [TÉCNICA: z-index y el eje Z]
+   z-index controla la "profundidad" de los elementos superpuestos.
+   Piénsalo como capas de papel apiladas: mayor z-index = más arriba.
+   IMPORTANTE: z-index solo funciona en elementos con position distinto
+   a static (relative, absolute, fixed, sticky).
+
+   #videoFondo tiene z-index: 0 y position: relative → establece
+   la capa base del stack. El video principal ocupa todo el ancho
+   como fondo de la sección de presentación.
+
+   object-fit: cover → hace que el video cubra su contenedor
+   manteniendo proporciones, recortando lo que sobresalga.
+   Equivalente al background-size: cover pero para <video> e <img>. */
+#videoFondo {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -245,6 +424,16 @@ h3{
 
 
 
+/* [TÉCNICA: position: absolute + z-index para superposición]
+   #soldadoPresentacion se superpone sobre #videoFondo usando:
+   - position: absolute → sale del flujo normal del documento
+     y se posiciona relativo a su ancestor posicionado más cercano.
+   - z-index: 1 → queda POR ENCIMA de #videoFondo (z-index: 0).
+   - margin-top: -20vw → desplazamiento negativo para subir el elemento
+     y centrarlo visualmente sobre el video de fondo.
+
+   Este patrón (fondo en z:0, contenido en z:1) es muy común para
+   crear secciones hero con imagen/video de fondo y texto superpuesto. */
 #soldadoPresentacion {
     display: flex;
     flex-direction: column;
@@ -255,15 +444,19 @@ h3{
     z-index: 1;
     position: absolute;
     margin-top: -20vw;
- 
+
 }
 
 h1{
     z-index: 1;
     font-size: 3vw;
-  
+
 }
 
+/* → opacity: 0.5 en la imagen del soldado crea un efecto de
+   transparencia parcial. El valor va de 0 (invisible) a 1 (opaco).
+   Aquí se usa para que el soldado parezca espectral o en segundo plano,
+   sin que tape completamente el texto superpuesto. */
 #soldado {
     opacity: 0.5;
     width: 25vw;
@@ -276,8 +469,23 @@ h1{
     width: 100vw;
     display: flex;
 
-    
+
 }
+
+/* ════════════════════════════════════════════════════════
+   SECCIÓN HÉROES — Fondo decorativo con position: absolute
+   [PATRÓN: Imagen decorativa de fondo con opacity baja]
+
+   #designer usa position: absolute + z-index: 0 + opacity: 0.2
+   para crear un fondo visual "fantasma" detrás del contenido real.
+
+   opacity: 0.2 → solo el 20% de opacidad. Visible como textura
+   de fondo sin competir con el contenido principal.
+   z-index: 0 → queda por debajo de #heroes_ul (que tiene z-index: 1).
+
+   Este patrón evita usar background-image en el contenedor,
+   lo que da más control sobre el tamaño y posición del elemento.
+   ════════════════════════════════════════════════════════ */
 #designer{
     width: 99vw;
     height: 50vw;
@@ -285,6 +493,18 @@ h1{
     z-index: 0;
     opacity: 0.2;
 }
+
+/* [TÉCNICA: flex-wrap para grid de tarjetas responsivo]
+   flex-wrap: wrap → permite que los ítems salten a la siguiente
+   línea cuando no caben en una sola fila. Sin esto, flex comprimiría
+   todos los ítems en una sola línea desbordando el contenedor.
+
+   justify-content: space-evenly → distribuye el espacio de forma
+   igual entre los ítems Y entre los ítems y los bordes del contenedor.
+   Perfecto para una cuadrícula de tarjetas equilibrada visualmente.
+
+   z-index: 1 → garantiza que las tarjetas de héroes aparecen
+   POR ENCIMA del #designer (z-index: 0). */
 #heroes_ul{
     margin-top: 10vw;
     width: 98vw;
@@ -292,20 +512,47 @@ h1{
     flex-wrap: wrap;
     flex-direction: row;
     justify-items: center;
-    justify-content: space-evenly;    
+    justify-content: space-evenly;
     align-items: stretch;
     align-content: center;
     z-index: 1;
     gap: 5vw;
 }
+
+/* → flex-direction: column-reverse → apila los hijos de abajo a arriba.
+   Si el HTML tiene [imagen, nombre], visualmente se verá [nombre, imagen].
+   Se usa aquí para que el texto quede debajo de la imagen sin cambiar el HTML. */
 .heroes_li{
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
     min-height: 50%;
-    
+
 }
 
+/* ════════════════════════════════════════════════════════
+   ANIMACIÓN CSS — transition + transform: scale en :hover
+   [TÉCNICA: Animación CSS pura sin JavaScript]
+
+   transition: transform .5s → define que cualquier cambio en
+   la propiedad "transform" se animará durante 0.5 segundos.
+   La función de tiempo por defecto es ease (aceleración suave).
+
+   En el :hover se aplica transform: scale(1.5) → escala el
+   elemento al 150% de su tamaño original. Al combinarlo con
+   transition, el escalado ocurre de forma animada y fluida.
+
+   box-shadow: 0 0 100px → añade un halo difuso en hover.
+   Valores: offset-x offset-y blur-radius color.
+   Un blur alto (100px) y offsets en 0 crea un "glow" circular.
+
+   border-radius: 5vw en hover → la esquina redondeada aparece
+   solo al pasar el ratón. También se anima gracias al transition
+   (aunque transform es lo principal que está transicionando aquí).
+
+   IMPORTANTE: transform NO altera el flujo del documento.
+   El elemento escala visualmente pero no "empuja" a sus vecinos.
+   ════════════════════════════════════════════════════════ */
 .soldier{
     width: 10vw;
     height: 14vw;
@@ -318,10 +565,15 @@ h1{
     box-shadow: 0 0 100px var(--color-terciario);
     border-radius: 5vw;
 }
+
 #articleVideojuegos{
     display: flex;
     flex-direction: column;
-}   
+}
+
+/* → position: absolute + z-index: 0 + opacity: 0.1 → mismo patrón
+   que #designer: imagen decorativa de fondo de muy baja opacidad
+   para dar profundidad visual sin tapar el contenido principal. */
 #fondoVideojuegos{
     width: 100vw;
     height: 50vw;
@@ -387,6 +639,24 @@ h1{
     align-content: center;
     justify-items: center;
 }
+
+/* ════════════════════════════════════════════════════════
+   PATRÓN: Swap imagen ↔ video en hover (CSS + JS)
+
+   La imagen y el video ocupan el mismo espacio visual.
+   Por defecto: <img> visible, <video> { display: none }
+   En :hover del contenedor: <img> { display: none }, <video> { display: block }
+
+   display: none elimina el elemento del flujo y del espacio visual.
+   Al intercambiar qué elemento tiene display: none, se logra
+   el efecto de "reemplazar" la imagen con el video.
+
+   ¿Por qué también hace falta JavaScript?
+   CSS no puede llamar métodos del DOM. El JS complementa esto
+   escuchando mouseenter/mouseleave para llamar a video.play()
+   y video.pause(). CSS controla la visibilidad, JS controla
+   la reproducción — cada tecnología hace lo que sabe hacer.
+   ════════════════════════════════════════════════════════ */
 #fallout video {
     display: none;
     width: 30vw;
@@ -410,13 +680,17 @@ h3{
     overflow: hidden;
 
 }
+
+/* → Mismo patrón de swap imagen ↔ video aplicado al elemento #diablo.
+   La repetición del patrón refuerza que es una convención del proyecto:
+   cada tarjeta de videojuego usa el mismo mecanismo CSS de intercambio. */
 #diablo video {
     display: none;
     width: 30vw;
     height: 30vw;
-    
 
-}   
+
+}
 
 #diablo:hover img {
     display: none;
@@ -431,6 +705,20 @@ h3{
 
 
 
+
+/* ════════════════════════════════════════════════════════
+   FOOTER — Flexbox con flex-direction: column
+   [TÉCNICA: Apilar elementos con flex-direction: column]
+
+   flex-direction: column → los ítems hijos se apilan
+   verticalmente (el eje principal pasa a ser el vertical).
+   Por defecto en flex es row (horizontal).
+   Aquí el footer se divide en secciones apiladas: logo arriba,
+   barra de redes sociales abajo.
+
+   justify-content: space-evenly → con dirección columna,
+   distribuye el espacio vertical de forma igual entre las secciones.
+   ════════════════════════════════════════════════════════ */
 #footer{
     display: flex;
     flex-direction: column;
@@ -441,13 +729,18 @@ h3{
     align-content: center;
     justify-items: center;
     margin-top: 6vw;
-   
- 
+
+
 
 }
+
+/* → flex-direction: row-reverse → los ítems se muestran en fila
+   pero en orden INVERSO al del HTML. El último elemento del DOM
+   aparece primero visualmente. Útil para reordenar visualmente
+   sin cambiar la semántica del HTML. */
 #footer1{
-   
- 
+
+
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-evenly;
@@ -456,12 +749,22 @@ h3{
     justify-items: center;
 }
 
+/* [TÉCNICA: min-width / min-height como tamaño mínimo garantizado]
+   min-width: 50px → el elemento nunca será más pequeño que 50px,
+   incluso en pantallas muy pequeñas donde vw podría reducirlo demasiado.
+   Es una red de seguridad para elementos que no deben volverse invisibles.
+   Diferencia: width fija el tamaño exacto; min-width solo pone un suelo. */
 .footImg{
     min-width: 50px;
     min-height: 50px;
-   
+
 }
 
+/* → max-width: 300px + width: 50vw + min-width: 40vw → triple restricción:
+   El logo crece con el viewport (50vw = 50% del ancho),
+   nunca supera 300px en pantallas grandes (max-width),
+   y nunca baja de 40vw en pantallas pequeñas (min-width).
+   Patrón muy robusto para imágenes de logo responsivas. */
 #logoFooter{
     max-width: 300px;
     width: 50vw;
@@ -470,21 +773,52 @@ h3{
 }
 
 
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN — Media Queries
+   Estrategia: desktop-first (estilos base para escritorio,
+   se sobreescriben para pantallas más pequeñas).
+
+   [TÉCNICA: @media screen and (max-width)]
+   @media screen → aplica solo a dispositivos con pantalla
+   (excluye impresoras, lectores de pantalla, etc.).
+   max-width: 800px → estos estilos entran en vigor cuando
+   el viewport mide 800px o MENOS (tablet y móvil).
+
+   Breakpoints usados en este proyecto:
+   - max-width: 800px → tablet
+   - max-width: 600px → móvil
+
+   Dentro de cada breakpoint se sobreescriben SOLO las propiedades
+   que necesitan cambiar — el resto hereda los estilos base.
+   ════════════════════════════════════════════════════════ */
 @media screen and (max-width: 800px) {
+    /* → display: none oculta los elementos de navegación de escritorio.
+       En tablet, el espacio es menor y se simplifica el nav para mostrar
+       solo los elementos esenciales: menú, logo, búsqueda, usuario, carrito. */
     .tabletnav, .pcnav {
-        display: none; 
+        display: none;
 
     }
-    
+
+    /* [TÉCNICA: Cambio de Grid a Flex en breakpoint]
+       El nav pasa de grid (9 columnas) a flex en tablet.
+       En tablet hay menos espacio y menos elementos visibles,
+       por lo que flex con gap es suficiente y más sencillo de controlar.
+       flex-wrap: nowrap → fuerza todos los elementos en una sola línea. */
     body > header > nav > ul{
-        background-color: var(--color-cuaternario);      
+        background-color: var(--color-cuaternario);
         display: flex;
         flex-wrap: nowrap;
         flex-direction: row;
         gap: 8vw;
-       
+
     }
 
+    /* [TÉCNICA: order en Flexbox]
+       La propiedad order reordena visualmente los ítems flex
+       sin cambiar el HTML. Por defecto todos tienen order: 0.
+       Aquí se asigna order: 1, 2, 3... para controlar
+       la secuencia visual: menú → logo → búsqueda → usuario → carrito. */
     #Menu{
         order: 1;
         margin-right: 1vw;
@@ -492,7 +826,7 @@ h3{
     }
 
     #Logo{
-        order: 2;        
+        order: 2;
     }
     #imglogo{
         width: 30vw;
@@ -507,7 +841,7 @@ h3{
        display: flex;
        flex-direction: row;
        flex-wrap: wrap;
-       
+
     }
     #search{
         padding-top: -1vw;
@@ -550,13 +884,21 @@ h3{
         text-transform: uppercase;
         font-weight: bold;
         padding-left: 5vw;
-        padding-right: 5vw; 
-      
+        padding-right: 5vw;
+
     }
     #designer{
         width: 100vw;
         height: auto;
     }
+
+    /* [TÉCNICA: Cambio de Flex a Grid en breakpoint para layout de tarjetas]
+       En desktop, #heroes_ul usa flex con wrap para distribuir tarjetas libremente.
+       En tablet, se cambia a grid con 4 columnas fijas para mayor control:
+       - repeat(4, 1fr) → 4 columnas de igual ancho
+       - grid-template-rows: 1fr 1fr → 2 filas
+       Grid es más predecible que flex cuando necesitas alineación exacta
+       de filas Y columnas al mismo tiempo. */
     #heroes_ul{
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -575,14 +917,37 @@ h3{
 
 }
 
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN — Breakpoint móvil (max-width: 600px)
+   ════════════════════════════════════════════════════════ */
 @media screen and (max-width: 600px) {
     .tabletnav, .pcnav {
-        display: none; 
+        display: none;
 
     }
-    
-    @keyframes desplazar { 
-        0% { 
+
+    /* ════════════════════════════════════════════════════════
+       ANIMACIÓN: @keyframes — Ticker / texto desplazante
+       [TÉCNICA: @keyframes + animation para ticker horizontal]
+
+       @keyframes define los "fotogramas clave" de una animación.
+       La animación "desplazar" mueve el elemento en el eje X:
+
+       0%  → translateX(98%)  → el elemento empieza FUERA del viewport a la derecha.
+       100% → translateX(-156%) → termina FUERA del viewport a la izquierda.
+
+       El valor positivo (98%) hace que el ticker entre por la derecha.
+       El valor negativo (-156%) garantiza que el ÚLTIMO ítem de la lista
+       salga completamente por la izquierda antes de reiniciarse.
+       El porcentaje exacto depende del número de ítems y su ancho total.
+
+       Se aplica como: animation: desplazar 10s linear infinite;
+       - 10s → duración del ciclo completo
+       - linear → velocidad constante (sin aceleración), ideal para tickers
+       - infinite → se repite indefinidamente
+       ════════════════════════════════════════════════════════ */
+    @keyframes desplazar {
+        0% {
             transform: translateX(98%); /*con esto ajustamos el inicio de la animacion al principio de la pantalla*/
         }
         100% {
@@ -591,38 +956,55 @@ h3{
     }
     body {
         background-color: var(--color-cuaternario);
-       
+
     }
+
+    /* → overflow: hidden en #anuncios es ESENCIAL para el ticker.
+       El contenedor actúa como una "ventana": el texto se mueve
+       por detrás de ella. Sin overflow: hidden, veríamos el texto
+       desplazándose fuera de los límites del contenedor. */
     #anuncios{
         width: 100vw;
         overflow: hidden;
     }
+
+    /* → animation: desplazar 10s linear infinite aplica la animación
+       definida en @keyframes. El ul completo se mueve como una unidad,
+       arrastrando todos los li de anuncios como un único bloque. */
     #anuncios_ul {
-      
+
         display: flex;
         animation: desplazar 10s linear infinite;
         background-color: var(--color-cuaternario);
         justify-content: space-between;
-   
+
     }
-    
+
     .anuncios_li {
         background-color: var(--color-cuaternario);
-        margin-right: 25vw;     
+        /* → margin-right: 25vw crea separación entre los ítems del ticker.
+           Al moverse como bloque, este espacio garantiza que los anuncios
+           no aparezcan pegados entre sí durante la animación. */
+        margin-right: 25vw;
         font-size: 2vw;
     }
- 
-   
+
+
+    /* [TÉCNICA: Grid de 5 columnas para nav móvil]
+       En móvil el nav vuelve a usar Grid, pero ahora con 5 columnas
+       y 2 filas: fila 1 para menú/logo/iconos, fila 2 para búsqueda.
+       La búsqueda ocupa toda la fila 2 con grid-column: 1 / -1
+       (-1 es un índice negativo que significa "última línea del grid"). */
     #ul_nav{
         height: 18vw;
-        background-color: var(--color-cuaternario);      
+        background-color: var(--color-cuaternario);
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: 1fr 1fr;
         align-items:center;
         justify-items: center;
-  
-       
+
+
     }
 
     #Menu{
@@ -637,18 +1019,23 @@ h3{
         margin-top: 2vw;
         padding-left: 12vw;
         grid-row: 1;
-        grid-column: 2/3;     
+        grid-column: 2/3;
         width: 40vw;
     }
     #imglogo{
         width: 38vw;
     }
- 
+
+    /* [TÉCNICA: grid-column: 1 / -1 → span completo de fila]
+       grid-column: 1 / -1 hace que el elemento ocupe TODAS las columnas
+       del grid, de la primera línea a la última.
+       -1 siempre referencia la última línea del grid, independientemente
+       del número de columnas. Muy útil para elementos a ancho completo. */
     #Search{
         grid-row: 2;
         grid-column: 1/ -1;
-        margin-top: -8vw;  
-        width: 80vw;    
+        margin-top: -8vw;
+        width: 80vw;
         margin-left: 3vw;
     }
     #search{
@@ -669,10 +1056,20 @@ h3{
         grid-column: 4;
     }
 
+    /* → display: none en móvil oculta la imagen de fondo decorativa #designer.
+       En pantallas pequeñas el espacio es limitado y la imagen de fondo
+       añadiría ruido visual sin aportar valor. Progressive disclosure: mostrar
+       menos en pantallas pequeñas es una decisión de UX válida. */
     #designer{
         display: none;
-     
+
     }
+
+    /* [TÉCNICA: Grid de 2 columnas para móvil — de 4 a 2 columnas]
+       En tablet eran 4 columnas. En móvil se reduce a 2 columnas × 4 filas.
+       Mismo número de tarjetas (8), diferente distribución según espacio.
+       repeat(2, 1fr) → dos columnas de igual ancho que ocupan el 100% disponible.
+       Las tarjetas son más grandes y fáciles de tocar con el dedo en móvil. */
     #heroes_ul{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -681,9 +1078,20 @@ h3{
         justify-items: center;
         align-content: center;
         justify-content: center;
-      
-       
+
+
     }
+
+    /* [TÉCNICA: background-image por tarjeta en móvil]
+       En desktop y tablet, el fondo es la imagen #designer compartida (position absolute).
+       En móvil, cada .heroes_li tiene su propia imagen de fondo individual.
+
+       background-image: url() → asigna una imagen de fondo CSS.
+       background-size: cover → escala la imagen para cubrir todo el elemento,
+       recortando lo que sobresalga (mismo comportamiento que object-fit: cover).
+
+       width: 50vw + height: 50vw → cada tarjeta ocupa exactamente la mitad
+       del ancho del viewport, creando una cuadrícula perfecta de 2×4. */
     .heroes_li{
         font-size: 6vw;
         align-items: center;
@@ -699,6 +1107,10 @@ h3{
         margin-top: 5vw;
     }
 
+  /* → En móvil, el hover del soldado escala más (2x vs 1.5x en desktop)
+     porque las tarjetas son más pequeñas en proporción al elemento.
+     opacity: 1 en hover elimina la semitransparencia del estado base,
+     revelando la imagen completa al interactuar con ella. */
   .soldier:hover{
 
         transform: scale(2);
@@ -706,7 +1118,7 @@ h3{
         border-radius: 6vw;
         opacity: 1;
 
-        
+
     }
 
 }

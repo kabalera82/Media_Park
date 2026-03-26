@@ -1,58 +1,233 @@
 
 <!DOCTYPE html>
+<!--
+    [TÉCNICA] DOCTYPE html es la declaración del tipo de documento.
+    Le dice al navegador que use el estándar HTML5 moderno en lugar de
+    modos de compatibilidad heredados (quirks mode). Sin esto, algunos
+    navegadores interpretan el CSS de forma diferente.
+-->
+
+<!--
+    [TÉCNICA] El atributo lang="es-Es" no es decorativo:
+    - Los lectores de pantalla lo usan para pronunciar correctamente el contenido.
+    - Los motores de búsqueda lo usan para indexar el idioma.
+    - El navegador puede ofrecer traducción automática al usuario.
+    Es una pieza clave de accesibilidad (a11y) y SEO.
+-->
 <html lang="es-Es">
 <head>
+    <!--
+        ==========================================
+        SECCIÓN: <head>
+        ==========================================
+        El <head> NO es contenido visible. Es el bloque de metadatos:
+        instrucciones para el navegador, para buscadores y para redes sociales.
+        Todo lo que aquí se declare afecta al comportamiento de la página
+        antes de que se renderice ni un solo píxel.
+    -->
+
+    <!--
+        [TÉCNICA] charset="UTF-8" define la codificación de caracteres.
+        UTF-8 cubre todos los idiomas del mundo (árabe, chino, español con tildes, etc.).
+        SIEMPRE debe ser el PRIMER meta del <head> — el navegador lo necesita
+        para leer correctamente el resto del documento. Si va tarde, algunos
+        caracteres especiales pueden aparecer rotos (ej: "Ã©" en lugar de "é").
+    -->
     <meta charset="UTF-8">
+
+    <!--
+        [TÉCNICA] viewport es la instrucción de diseño responsivo más importante.
+        Sin este meta, los móviles renderizan la página como si tuviera 980px
+        de ancho y la escalan hacia abajo — el texto queda diminuto.
+        - width=device-width → el ancho del viewport = el ancho real del dispositivo.
+        - initial-scale=1 → sin zoom inicial. El usuario ve el 100%.
+        Es obligatorio para que cualquier media query de CSS funcione bien en móvil.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--
+        [TÉCNICA] <title> es el texto que aparece en la pestaña del navegador
+        y en los resultados de Google. Es el campo de SEO más importante del documento.
+        Un buen title describe la página en menos de 60 caracteres.
+    -->
     <title>Marcos Padilla</title>
+
+    <!--
+        [TÉCNICA] El meta "description" es el texto que Google muestra bajo
+        el título en los resultados de búsqueda (el snippet). No mejora el ranking
+        directamente, pero sí la tasa de clics (CTR).
+        Nota: aquí el content="#" está sin relleno — en producción debería
+        ser una descripción real de 150-160 caracteres.
+    -->
     <meta name="Game Zone and multimedia park" content="#">
+
+    <!--
+        [TÉCNICA] Las keywords de meta fueron relevantes para SEO hasta ~2009.
+        Google y la mayoría de buscadores las ignoran completamente hoy en día.
+        Se mantienen por compatibilidad histórica o por buscadores internos.
+    -->
     <meta keywords="Games, Diablo, Death Zone">
+
+    <!--
+        [TÉCNICA] Meta de autor: identifica al creador del documento.
+        No afecta al SEO moderno pero es una buena práctica de documentación.
+    -->
     <meta name="Marcos Padilla Puentes">
+
+    <!--
+        [TÉCNICA] <link rel="stylesheet"> enlaza la hoja de estilos externa.
+        Va en el <head> para que el navegador descargue el CSS ANTES de renderizar
+        el HTML. Si fuera al final del body, el usuario vería un destello de
+        contenido sin estilos (FOUC: Flash Of Unstyled Content).
+        El atributo href es la ruta al archivo CSS.
+    -->
     <link rel="stylesheet" href="style.css">
+
+    <!--
+        [TÉCNICA — ADVERTENCIA PEDAGÓGICA] El <script> aquí está en el <head>.
+        Esto es problemático: cuando el navegador llega a esta línea, el DOM
+        todavía no existe (el <body> aún no se ha parseado). Si el JS intenta
+        acceder a elementos como querySelector('#fallout'), fallará con null.
+
+        La solución estándar es mover el <script> AL FINAL del <body>
+        (justo antes de </body>), o usar el atributo "defer":
+            <script src="index.js" defer></script>
+        Con "defer", el script se descarga en paralelo pero se ejecuta
+        solo cuando el DOM está completamente parseado. Ver nota al pie del body.
+    -->
     <script src="index.js"></script>
+
+    <!--
+        [TÉCNICA] <link rel="icon"> define el favicon: el pequeño icono
+        que aparece en la pestaña del navegador y en marcadores.
+        Aquí se usa un .jpg — lo ideal es un .ico o un .png de 32x32px
+        para máxima compatibilidad, pero los navegadores modernos aceptan
+        formatos de imagen convencionales.
+    -->
     <link rel="icon"  href="assets/Untitled.jpg" >
 </head>
 <body>
+    <!--
+        ==========================================
+        SECCIÓN: <header>
+        ==========================================
+        [TÉCNICA] <header> es un elemento semántico de HTML5.
+        Semántico significa que tiene significado por sí mismo, más allá de
+        su presentación visual. <header> le dice al navegador, a los lectores
+        de pantalla y a los buscadores: "esto es la cabecera del documento
+        o de una sección".
+
+        No confundir con <head> (metadatos) ni con <div id="header"> (sin semántica).
+        Usar semántica correcta mejora:
+        - Accesibilidad: los lectores de pantalla pueden saltar directamente al <main>.
+        - SEO: Google entiende la estructura del documento.
+        - Mantenibilidad: el código se autoexplica.
+    -->
     <header>
-        
+
+        <!--
+            [TÉCNICA] <nav> es otro elemento semántico. Marca el bloque de
+            navegación principal. Los lectores de pantalla ofrecen al usuario
+            la opción de saltar directamente a la navegación o evitarla.
+            Solo debe usarse para bloques de navegación PRINCIPALES —
+            no para cualquier grupo de enlaces.
+        -->
         <nav>
+            <!--
+                [TÉCNICA] La navegación como <ul> (lista no ordenada) es
+                el patrón estándar de accesibilidad desde hace más de una década.
+                ¿Por qué una lista y no divs o spans?
+                - Semántica: una nav es conceptualmente una LISTA de destinos.
+                - Accesibilidad: los lectores de pantalla anuncian "lista de N elementos",
+                  lo que da contexto al usuario antes de navegar por ella.
+                - Los <li> son los ítems de esa lista — cada uno, un destino.
+                El id="ul_nav" permite que el CSS la estile con grid/flexbox.
+            -->
             <ul id="ul_nav">
+                <!--
+                    [TÉCNICA] Icono de menú hamburguesa como primer ítem de la lista.
+                    El patrón consiste en envolver el <img> SVG dentro de un <a href="#">
+                    para que sea clickable y accesible por teclado (Tab + Enter).
+                    El alt="Media Park menu" describe la función, no la apariencia
+                    ("menú de navegación", no "tres líneas horizontales").
+                    Al estar dentro de un <li>, el CSS puede posicionarlo con grid
+                    exactamente igual que el resto de ítems — coherencia de layout.
+                -->
                 <li id="Menu">
                     <a href="#" id="menu">
-                        <img src="./assets/menu.svg" alt="Media Park menu" id="imgmenu">                    
+                        <img src="./assets/menu.svg" alt="Media Park menu" id="imgmenu">
                     </a>
                 </li>
+
+                <!--
+                    [TÉCNICA] El logotipo como ítem de navegación.
+                    Poner el logo dentro de la <ul> de la nav es un patrón habitual
+                    porque permite usar el mismo sistema de grid del CSS para alinear
+                    todos los elementos de la barra en una sola regla.
+                    Alternativa: el logo fuera de la <ul> en el <header> directamente,
+                    con posicionamiento absoluto. La elección aquí simplifica el CSS.
+                -->
                 <li id="Logo">
                     <a href="#" id="logo">
-                        <img src="./assets/Media Park.jpg" alt="Media Park Logo" id="imglogo">                    
+                        <img src="./assets/Media Park.jpg" alt="Media Park Logo" id="imglogo">
                     </a>
                 </li>
+
+                <!--
+                    [TÉCNICA] Iconos de acción (usuario, tienda, búsqueda).
+                    El patrón <li> → <a> → <img SVG> se repite para todos los iconos.
+                    Esto es consistente con el principio de "mismo componente, misma estructura".
+                    Cada <a> recibe su propio id para ser estilado o controlado desde JS
+                    de forma independiente (ej: abrir un dropdown de usuario, un carrito, etc.).
+                -->
                 <li id="User">
                     <a href="#" id="user">
-                        <img src="./assets/persona.svg" alt="Area de usuario" id="imguser">                    
+                        <img src="./assets/persona.svg" alt="Area de usuario" id="imguser">
                     </a>
                 </li>
                 <li id="Shop">
                     <a href="#" id="shop">
-                        <img src="./assets/carrito.svg" alt="Tienda online" id="imgshop">                    
+                        <img src="./assets/carrito.svg" alt="Tienda online" id="imgshop">
                     </a>
                 </li>
+
+                <!--
+                    [TÉCNICA] Barra de búsqueda dentro de la navegación.
+                    El <input type="text"> está dentro de un <a>, lo cual es técnicamente
+                    inválido en HTML5 (los elementos interactivos no deben anidarse).
+                    El patrón correcto sería un <form> o el input directamente en el <li>.
+                    Aun así, es un patrón visual muy común en barras de navegación:
+                    el icono de lupa + campo de texto en el mismo ítem de la lista.
+                    El id="search" en el <li> permite diferenciarlo del resto para CSS
+                    y darle un ancho mayor que los demás ítems.
+                -->
                 <li id="Search">
                     <a href="#" id="search">
-                        <img src="./assets/search.svg" alt="Buscador" id="imgsearch"> 
-                        <input type="text" id="search" placeholder="Buscar...">                 
+                        <img src="./assets/search.svg" alt="Buscador" id="imgsearch">
+                        <input type="text" id="search" placeholder="Buscar...">
                     </a>
                 </li>
+
+                <!--
+                    [TÉCNICA] Links de texto para navegación en tablet/desktop.
+                    La clase "tabletnav" permite que el CSS muestre u oculte estos ítems
+                    según el breakpoint (display:none en móvil, display:block en tablet).
+                    Es el patrón de navegación responsiva más clásico:
+                    - Móvil: solo iconos + menú hamburguesa.
+                    - Tablet/Desktop: se despliegan los links de texto.
+                    El <a href="#"> vacío es un placeholder — en producción tendría la URL
+                    real de cada sección.
+                -->
                 <li class="tabletnav" id="tablet_nav1">Heroes
                     <a href="#"></a>
-                    
+
                 </li>
                 <li class="tabletnav" id="tablet_nav2">Videojuegos
-                    <a href="#">                  
+                    <a href="#">
                     </a>
                 </li>
                 <li class="tabletnav" id="tablet_nav3">Bandas Sonoras
-                    <a href="#" id="shop">                 
+                    <a href="#" id="shop">
                     </a>
                 </li>
                 <li class="tabletnav" id="tablet_nav4">Merchandysing
@@ -83,9 +258,42 @@
             </ul>
         </nav>
     </header>
-    <main id="Main">        
-        <div id="anuncios">  
-                      
+
+    <!--
+        [TÉCNICA] <main> marca el contenido principal de la página.
+        Solo debe haber UN <main> por documento.
+        Los lectores de pantalla y las herramientas de accesibilidad
+        usan <main> como punto de entrada al contenido real,
+        saltando header y nav. El id="Main" lo expone al CSS y al JS.
+    -->
+    <main id="Main">
+
+        <!--
+            ==========================================
+            SECCIÓN: Barra de anuncios
+            ==========================================
+            [TÉCNICA] Se usa <div> aquí en lugar de <section> o <article>
+            porque esta barra es un componente de UI (interfaz), no una
+            pieza de contenido semántico independiente. No describe una
+            sección de la página ni un artículo reutilizable — es solo
+            un contenedor de presentación para un ticker de avisos.
+
+            El patrón "ticker" (cinta de anuncios) consiste en:
+            - Una lista horizontal de ítems cortos.
+            - En móvil: se puede aplicar animación CSS (keyframes con translateX)
+              para que los ítems se desplacen como un carrusel.
+            - En desktop: se muestran todos a la vez en una barra fija.
+            El CSS controla el comportamiento visual según el breakpoint.
+        -->
+        <div id="anuncios">
+
+            <!--
+                [TÉCNICA] Lista de anuncios como <ul>.
+                Igual que en la nav, usar <ul> da semántica de lista.
+                Cada <li> es un anuncio independiente con su propio id
+                para poder estilarlo o controlarlo individualmente si fuera necesario.
+                La clase compartida "anuncios_li" permite estilar todos a la vez con CSS.
+            -->
             <ul id="anuncios_ul">
 
                 <li class="anuncios_li" id="anuncios_li1">Novedades</li>
@@ -97,8 +305,42 @@
             </ul>
 
         </div>
+
+        <!--
+            ==========================================
+            SECCIÓN: Presentación principal (Hero banner)
+            ==========================================
+            [TÉCNICA] <section> vs <article> — la diferencia que más confunde:
+            - <section>: agrupa contenido RELACIONADO dentro de la página.
+              Equivale a un capítulo de un libro. Necesita contexto del resto
+              de la página para tener sentido.
+            - <article>: contenido INDEPENDIENTE y autocontenido. Podría
+              sacarse de la página y publicarse en otro sitio sin perder sentido.
+              Ejemplos: post de blog, tarjeta de producto, entrada de noticias.
+
+            Aquí: <section id="presentacionPrincipal"> agrupa el hero del sitio
+            (un bloque que pertenece a ESTA página, no independiente).
+            Dentro, <article id="presentacion"> podría discutirse — en este caso
+            encapsula la unidad visual completa del hero, que tiene sentido propio.
+        -->
         <section id="presentacionPrincipal">
             <article id="presentacion">
+                <!--
+                    [TÉCNICA] Patrón de imagen + texto sobre vídeo de fondo.
+                    El layout tiene dos capas:
+                    1. #soldadoPresentacion: contiene el h1 y la imagen del soldado.
+                       Se posiciona encima del video con z-index > 0.
+                    2. #video: contiene el <video> como fondo.
+                       Se posiciona con position:absolute o como fondo del article.
+
+                    El video tiene autoplay, loop y muted:
+                    - autoplay: arranca automáticamente sin interacción del usuario.
+                    - loop: se repite al llegar al final.
+                    - muted: OBLIGATORIO para que autoplay funcione en navegadores modernos.
+                      Chrome y Safari bloquean el autoplay con sonido salvo interacción previa.
+                    Este video es DECORATIVO — fondo atmosférico, no contenido informativo.
+                    Por eso no necesita controles ni texto alternativo.
+                -->
                 <div id="soldadoPresentacion">
                     <h1>Media Park un mundo apocalíptico</h1>
                     <img src="./assets/soldier.png" id="soldado">
@@ -108,10 +350,46 @@
                 </div>
             </article>
         </section>
+
+        <!--
+            ==========================================
+            SECCIÓN: Selector de héroes
+            ==========================================
+            [TÉCNICA] <section> sin id (aquí actúa como contenedor de layout).
+            El <article id="articleHeroes"> es la unidad de contenido independiente:
+            podría exportarse como "componente de selección de héroe" en otro contexto.
+
+            Patrón de imagen de fondo semitransparente con z-index:
+            - <img id="designer"> se posiciona con position:absolute, width:100%, height:100%
+              cubriendo el article completo.
+            - Se le aplica opacity o un filtro de color para que no tape el contenido.
+            - El contenido (h2 + ul) tiene z-index superior, por eso aparece encima.
+            Este patrón es la alternativa a background-image en CSS cuando necesitas
+            controlar la opacidad de la imagen sin afectar a los hijos
+            (con background-image + opacity, los hijos también se vuelven transparentes).
+        -->
         <section>
-            <article id="articleHeroes">          
+            <article id="articleHeroes">
+                <!--
+                    [TÉCNICA] Imagen de fondo decorativa como <img> en el DOM.
+                    A diferencia de background-image en CSS, este <img> puede tener
+                    su propia opacidad sin afectar al contenido superpuesto.
+                    El CSS la posiciona como absolute dentro del article (position:relative)
+                    y le da z-index bajo para que quede por detrás del texto y los héroes.
+                -->
                 <img src="./assets/Designer.jpg" alt="Designer" id="designer">
                 <h2>Elige a tu Heroe</h2>
+
+                <!--
+                    [TÉCNICA] Lista de personajes como <ul>.
+                    Cada <li class="heroes_li"> representa un héroe seleccionable.
+                    El patrón es: nombre del héroe como texto del <li> + imagen del
+                    personaje como <img> hijo.
+                    CSS transforma esta lista en una cuadrícula (grid o flexbox)
+                    de tarjetas de personaje.
+                    Los ids únicos (heroe1, heroe2...) permiten estilar o animar
+                    cada héroe de forma independiente desde CSS o JS.
+                -->
                 <ul id="heroes_ul">
                     <li class="heroes_li" id="heroe1">Skeleton
                         <img src="./assets/Soldier1.png" alt="Scull" class="soldier" id="soldier1">
@@ -140,18 +418,83 @@
                 </ul>
             </article>
         </section>
+
+        <!--
+            ==========================================
+            SECCIÓN: Selector de videojuegos (con video on hover)
+            ==========================================
+            [TÉCNICA] Este es el patrón más interesante del proyecto: imagen → video al pasar el ratón.
+            Estructura de cada tarjeta de juego:
+            - <li class="videojuego" id="fallout">: el contenedor principal que escucha eventos.
+            - <h3>: título del juego.
+            - <div class="videojuego" id="fallout">: contenedor interior con:
+                · <img>: la portada estática, visible por defecto.
+                · <video preload="none">: el video, oculto por defecto.
+
+            El CSS se encarga de:
+            - Mostrar <img>, ocultar <video> en estado normal.
+            - Al aplicar una clase de hover (o directamente desde JS), invertir visibilidad.
+
+            El JS se encarga de:
+            - Detectar mouseover/mouseout en el <li> contenedor.
+            - Llamar a video.play() y video.pause().
+            Porque CSS no puede llamar métodos de la API de HTMLVideoElement.
+
+            Nota sobre preload="none":
+            - El video NO se descarga hasta que se necesita.
+            - Contrasta con el video de fondo del hero, que sí tiene autoplay
+              porque es decorativo y siempre visible.
+            - Aquí el video solo se carga/reproduce cuando el usuario interactúa.
+            - Esto mejora el rendimiento inicial de la página (menos peticiones de red).
+        -->
         <section>
             <article id="articleVideojuegos">
+                <!--
+                    [TÉCNICA] Imagen de fondo del artículo de videojuegos.
+                    Mismo patrón que en articleHeroes: <img> como fondo decorativo
+                    controlado por z-index, en lugar de background-image en CSS.
+                -->
                 <img src="./assets/(1).jpeg" alt="fondos" id="fondoVideojuegos">
                 <h2>Escoge tu Mundo</h2>
                 <ul id="Videojuegos">
+                    <!--
+                        [TÉCNICA] Tarjeta de videojuego: Fallout.
+                        El <li id="fallout"> es el elemento que registra los eventos
+                        de ratón en index.js (ver comentarios en ese archivo).
+                        Dentro hay un <div> con el mismo id "fallout" que actúa como
+                        contenedor visual de la portada + video.
+
+                        Por qué el evento está en el <li> y no en el <div> o el <img>:
+                        - El área de interacción es más grande (todo el <li>: título + imagen).
+                        - El usuario no tiene que apuntar exactamente al video para activarlo.
+                        - Es más tolerante con el movimiento del ratón.
+                    -->
                     <li class="videojuego" id="fallout">
                         <h3>Fallout</h3>
                         <div class="videojuego" id="fallout">
+                            <!--
+                                [TÉCNICA] Imagen estática como portada por defecto.
+                                CSS la muestra (display:block o opacity:1) y oculta el video.
+                                Al activarse el hover desde JS, CSS o JS invierten esto.
+                            -->
                             <img src="./assets/fallout.jpeg" alt="Fallout"class="videojuegos" id="falloutImg">
+                            <!--
+                                [TÉCNICA] Video sin controls ni autoplay.
+                                - Sin controls: no hay barra de reproducción visible.
+                                  El usuario no controla el video manualmente — lo hace el hover.
+                                - Sin autoplay: no arranca al cargar la página.
+                                  Esto es intencional — el video se activa exclusivamente
+                                  desde JS con video.play() al detectar mouseover.
+                                - loop y muted: misma razón que el video de fondo.
+                                  loop para que no pare. muted para que autoplay
+                                  (cuando se llama desde JS) no sea bloqueado por el navegador.
+                                - preload="none": no descarga el video hasta que se necesita.
+                            -->
                             <video src="./assets/falloutVideo.mp4" preload="none" autoplay loop muted id="falloutVideo"></video>
                         </div>
                     </li>
+
+                    <!-- Misma estructura que Fallout — patrón idéntico para Diablo -->
                     <li class="videojuego" id="diablo">
                         <h3>Diablo</h3>
                         <div class="videojuego" id="diablo">
@@ -159,21 +502,42 @@
                             <video src="./assets/falloutVideo.mp4" preload="none" autoplay loop muted id="diabloVideo"></video>
                         </div>
                     </li>
-                    
+
                 </ul>
 
             </article>
         </section>
-     
 
 
-    
     </main>
 
 
+    <!--
+        ==========================================
+        SECCIÓN: <footer>
+        ==========================================
+        [TÉCNICA] <footer> es el elemento semántico de cierre del documento.
+        Igual que <header>, le dice al navegador y a los lectores de pantalla:
+        "aquí termina el contenido principal, esto es el pie de página".
+        Contiene normalmente: copyright, links legales, RRSS, contacto.
+
+        Aquí se anida una <section id="footer"> dentro del footer.
+        Esto es válido: el footer puede tener secciones si tiene suficiente
+        contenido como para organizarlo internamente.
+    -->
     <footer>
         <section id="footer">
             <h2>Siguenos en Redes</h2>
+
+            <!--
+                [TÉCNICA] Links a redes sociales como imágenes dentro de un <article>.
+                Patrón estándar: cada red social es una <img> clickable.
+                En una implementación completa, cada <img> estaría envuelta en un <a>
+                con href a la URL de la red social y target="_blank" para abrir en pestaña nueva.
+                Las clases e ids permiten al CSS dimensionar y espaciar cada icono.
+                El logo de Media Park al final de la lista actúa como firma visual — refuerza
+                la marca en el área de menor atención de la página.
+            -->
             <article id="footer1">
                 <img src="./assets/x.png" alt="X" class="footImg" id="x">
                 <img src="./assets/f.png" alt="Facebook" class="footImg" id="Facebook">
@@ -181,10 +545,31 @@
                 <img src="./assets/r.png" alt="redit" class="footImg" id="reddit">
                 <img src="./assets/y.png" alt="videos" class="footImg" id="youtube">
                 <img src="./assets/Media Park.jpg" alt="media" class="footImg" id="logoFooter">
-            
+
             </article>
         </section>
     </footer>
 
+    <!--
+        [TÉCNICA — POSICIÓN DEL SCRIPT] El ideal es poner el <script> AQUÍ, al final del body.
+        ¿Por qué? Cuando el navegador parsea HTML de arriba a abajo, al llegar a un <script>
+        se detiene y ejecuta el JS antes de continuar. Si el script está en el <head>
+        y hace querySelector('#fallout'), el <li id="fallout"> todavía no existe en el DOM
+        y devuelve null — el addEventListener no se registra y el hover no funciona.
+
+        Al ponerlo al final del body, todos los elementos del DOM ya existen cuando
+        el JS se ejecuta.
+
+        Alternativas equivalentes sin mover el script:
+        1. <script src="index.js" defer></script> en el <head>:
+           El script se descarga en paralelo con el HTML, pero solo se ejecuta
+           cuando el DOM está completamente parseado. Mismo resultado, más elegante.
+        2. Envolver el código en DOMContentLoaded:
+           document.addEventListener('DOMContentLoaded', function() { ... });
+           Dentro de esa función, el DOM siempre está disponible.
+
+        En este proyecto, el <script> está en el <head> (línea 12) — funciona porque
+        los navegadores modernos son tolerantes, pero es una práctica a corregir.
+    -->
 </body>
 </html>
